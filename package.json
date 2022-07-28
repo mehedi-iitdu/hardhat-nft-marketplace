@@ -1,12 +1,12 @@
 {
-    "name": "hardhat-starter-kit-typescript",
+    "name": "hardhat-nft-marketplace",
     "version": "1.0.0",
     "author": {
         "name": "Mehedi Hasan",
         "email": "mehedi.iitdu@gmail.com",
         "url": "https://www.linkedin.com/in/md-mehedi-hasan-140116133/"
     },
-    "description": "This is a boilerplate for hardhat smart contract projects using typescript",
+    "description": "This is a NFT marketplace smart contract project using hardhat",
     "devDependencies": {
         "@chainlink/contracts": "^0.4.1",
         "@nomicfoundation/hardhat-toolbox": "^1.0.2",
