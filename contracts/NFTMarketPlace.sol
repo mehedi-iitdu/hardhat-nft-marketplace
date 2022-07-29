@@ -2,23 +2,10 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract NFTMarketPlace is ReentrancyGuard {
-    using Counters for Counters.Counter;
-    Counters.Counter private _itemIds;
-    Counters.Counter private _itemsSold;
-
-    address private immutable owner;
-    uint256 private listingPrice = 0.0025 ether;
-
-    mapping(uint256 => MarketItem) private idToMarketItem;
-
-    constructor(address _owner) {
-        owner = _owner;
-    }
-
     struct MarketItem {
         uint256 itemId;
         address nftAddress;
@@ -28,6 +15,14 @@ contract NFTMarketPlace is ReentrancyGuard {
         uint256 price;
         bool sold;
     }
+
+    using Counters for Counters.Counter;
+    Counters.Counter private _itemIds;
+    Counters.Counter private _itemsSold;
+    address payable private immutable contractOwner;
+    uint256 private listingPrice = 0.0025 ether;
+
+    mapping(uint256 => MarketItem) private idToMarketItem;
 
     event MarketItemCreated(
         uint256 indexed itemId,
@@ -39,11 +34,15 @@ contract NFTMarketPlace is ReentrancyGuard {
         bool sold
     );
 
+    constructor() {
+        contractOwner = payable(msg.sender);
+    }
+
     function createMarketItem(
         address nftAddress,
         uint256 tokenId,
         uint256 price
-    ) public payable nonReentrant {
+    ) external payable nonReentrant {
         require(price > 0, "Price must be greater than 0");
         require(msg.value == listingPrice, "Listing price not matched");
 
@@ -74,7 +73,7 @@ contract NFTMarketPlace is ReentrancyGuard {
     }
 
     function saleMarketItem(address nftAddress, uint256 itemId)
-        public
+        external
         payable
         nonReentrant
     {
