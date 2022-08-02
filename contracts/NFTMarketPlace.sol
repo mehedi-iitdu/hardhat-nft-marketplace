@@ -93,6 +93,10 @@ contract NFTMarketPlace is ReentrancyGuard {
         require(success, "Transfer failed");
     }
 
+    function getOwner() public view returns (address payable) {
+        return contractOwner;
+    }
+
     function getItemListingPrice() public view returns (uint256) {
         return listingPrice;
     }
